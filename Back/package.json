@@ -2,9 +2,9 @@
   "name": "inventario",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "tsnd --transpile-only --ignore-watch node_modules src/app.ts"
+    "dev": "tsnd --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "author": "",
   "license": "ISC",

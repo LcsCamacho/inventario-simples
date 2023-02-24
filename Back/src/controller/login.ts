@@ -8,7 +8,8 @@ export type userType = {
 }
 
 export const listar = (req: Request, res: Response) => {
-    connection.query('SELECT * FROM usuario', (err, result) => {
+    let usuario = new Usuario(req.body);
+    connection.query(usuario.read(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -18,9 +19,10 @@ export const listar = (req: Request, res: Response) => {
 }
 
 export const criar = (req: Request, res: Response) => {
-    let { username, password }: userType = req.body;
+    let data:userType = req.body;
+    let usuario = new Usuario(data);
 
-    connection.query(`INSERT INTO usuario (username, password) VALUE ('${username}', '${password}')`, (err, result) => {
+    connection.query(usuario.create(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -30,27 +32,27 @@ export const criar = (req: Request, res: Response) => {
 }
 
 export const logar = (req: Request, res: Response) => {
+    let data:userType = req.body;
+    let usuario = new Usuario(data);
 
-    let { username, password }: userType = req.body;
-
-    connection.query(`SELECT * FROM usuario WHERE username = '${username}' AND password = '${password}'`, (err, result) => {
+    connection.query(usuario.logar(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
             if (result.length > 0) {
-                console.log("Usuario encontrado");
-                res.json(result).status(200).end();
+                res.status(200).end()
             } else {
-                res.send("Usuario nao encontrado").status(404).end();
+                res.status(404).end();
             }
         }
     });
-
 }
-export const deletar = (req: Request, res: Response) => {
-    let { username } = req.params;
 
-    connection.query(`DELETE FROM usuario WHERE id = ${username}`, (err, result) => {
+export const deletar = (req: Request, res: Response) => {
+    let data:userType = req.body;
+    let usuario = new Usuario(data);
+
+    connection.query(usuario.delete(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -61,9 +63,10 @@ export const deletar = (req: Request, res: Response) => {
 }
 
 export const atualizar = (req: Request, res: Response) => {
-    let { username } = req.params;
+    let data:userType = req.body;
+    let usuario = new Usuario(data);
 
-    connection.query(`UPDATE usuario SET username = '${req.body.username}', password = '${req.body.password}' WHERE username = ${username}`, (err, result) => {
+    connection.query(usuario.update(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {

@@ -3,8 +3,14 @@ body {
     height: 100vh;
 }
 
+a {
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
 .home {
-    background-color: azure;
+    background-color: rgb(132, 0, 255);
     border-radius: 10px;
     padding: 20px;
+    color: #fff;
 }

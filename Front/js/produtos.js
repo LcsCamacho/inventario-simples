@@ -1,8 +1,15 @@
+//utils
+
+const formatBRL = (value) => {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
 const form = document.querySelector('form');
-const inputId = document.querySelector('#id');
 const inputNome = document.querySelector('#nome');
 const inputDescricao = document.querySelector('#descricao');
 const inputValor = document.querySelector('#valor');
+const total = document.querySelector('#total');
+total.innerHTML = formatBRL(200);
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -20,12 +27,11 @@ form.addEventListener('submit', (e) => {
     fetch('http://localhost:3000/inventario', options)
         .then(res => res.json())
         .then((data) => {
-            inputId.value = '';
             inputNome.value = '';
             inputDescricao.value = '';
             inputValor.value = '';
             alert('Produto cadastrado com sucesso!')
-            console.log(data);
+            listarProdutos();
         })
         .catch(err => console.log(err));
 });
@@ -47,13 +53,16 @@ const listarProdutos = () => {
         .then(data => {
             const tbody = document.querySelector('tbody');
             tbody.innerHTML = '';
+            let tot = 0;
             data.forEach((item) => {
+                tot += item.valor;
+                total.innerHTML = formatBRL(tot);
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                 <td id="id">${item.id}</td>
                 <td id="nome">${item.nome}</td>
                 <td id="desc">${item.descricao}</td>
-                <td id="val">${item.valor}</td>
+                <td id="val">${formatBRL(item.valor)}</td>
                 <td><img id="remove-icon" onclick="removerProduto(${item.id})" src="../assets/remover.png"/></td>
                 <td><img id="edit-icon" onclick="editarProdutoControl(this)" src="../assets/escrever.png"/></td>
             `;
@@ -72,12 +81,10 @@ const removerProduto = (id) => {
             'Content-Type': 'application/json'
         }
     }
+    if (!confirm('Deseja realmente remover este produto?')) return
 
     fetch(`http://localhost:3000/inventario/${id}`, options)
-        .then(res => res.json())
-        .then(data => {
-            listarProdutos();
-        })
+        .then(( ) => listarProdutos())
         .catch(err => console.log(err));
 }
 
@@ -95,7 +102,6 @@ const editarProduto = (id, produtos) => {
 }
 let save = false
 const editarProdutoControl = (e) => {
-    console.log(e)
     if (save) {
         const data = {
             id: e.parentNode.parentNode.querySelector('#id').innerText,
@@ -114,6 +120,7 @@ const editarProdutoControl = (e) => {
         save = false
         id = e.parentNode.parentNode.querySelector('#id').innerText
         editarProduto(id, data)
+        listarProdutos();
         return
     }
     e.parentNode
@@ -126,7 +133,6 @@ const editarProdutoControl = (e) => {
         });
     e.setAttribute('src', '../assets/save.png');
     save = true
-    console.log(save)
 }
 
 const modalControl = () => {

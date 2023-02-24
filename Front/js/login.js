@@ -4,7 +4,6 @@ form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = new FormData(form);
     const value = Object.fromEntries(data.entries());
-    console.log(value)
     let options = {
         method: "POST",
         headers: {
@@ -14,7 +13,11 @@ form.addEventListener("submit", (e) => {
     };
 
     fetch("http://localhost:3000/usuario", options)
-        .then(() =>  alert("Logado!"))
-        .then(() => window.location.href = "http://localhost:5500/Front/pages/produtos.html")
-        .catch((err) => console.log("erro Fetch: ", err));
+        .then((resp) => resp.status)
+        .then((resp) => {
+            if (resp == 200)
+                window.location.href = "http://localhost:5500/Front/pages/produtos.html"
+            else
+                alert("Usuário ou senha inválidos")
+        })
 });

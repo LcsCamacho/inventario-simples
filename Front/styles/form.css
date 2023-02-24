@@ -5,7 +5,8 @@
   font-family: "Poppins", sans-serif;
 }
 
-body, html {
+body,
+html {
   background-color: #f5f5f5;
   height: 100%;
 }
@@ -29,14 +30,22 @@ body, html {
   cursor: pointer;
 }
 
-#remove-icon, #edit-icon, #plus-icon {
+#remove-icon,
+#edit-icon,
+#plus-icon {
   max-width: 35px;
   -o-object-fit: contain;
      object-fit: contain;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
 }
-#remove-icon:hover, #remove-icon:focus, #remove-icon:active, #edit-icon:hover, #edit-icon:focus, #edit-icon:active, #plus-icon:hover, #plus-icon:focus, #plus-icon:active {
+#remove-icon:hover, #remove-icon:focus, #remove-icon:active,
+#edit-icon:hover,
+#edit-icon:focus,
+#edit-icon:active,
+#plus-icon:hover,
+#plus-icon:focus,
+#plus-icon:active {
   transform: scale(0.95);
 }
 
@@ -58,9 +67,31 @@ body, html {
   padding: 2rem;
 }
 .modal .form {
+  padding: 20px;
+  border-radius: 10px;
   max-width: 720px;
 }
 
 .produtos h1 {
   text-align: center;
+}
+
+.total {
+  width: -moz-max-content;
+  width: max-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #cfe2ff;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.total div {
+  gap: 10px;
+}
+.total h3 {
+  margin: 0;
 }/*# sourceMappingURL=form.css.map */

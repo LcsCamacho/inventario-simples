@@ -10,7 +10,9 @@ export type inventarioType = {
 }
 
 export const listar = (req: Request, res: Response) => {
-    connection.query('SELECT * FROM produtos', (err, result) => {
+    let produto = new Produto(req.params)
+
+    connection.query(produto.read(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -20,9 +22,10 @@ export const listar = (req: Request, res: Response) => {
 }
 
 export const criar = (req: Request, res: Response) => {
-    let { id, nome, descricao, valor }: inventarioType = req.body;
+    let data: inventarioType = req.body;
+    let produto = new Produto(data)
 
-    connection.query(`INSERT INTO produtos (id, nome, descricao, valor) VALUE (${id}, '${nome}', '${descricao}', ${valor})`, (err, result) => {
+    connection.query(produto.create(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -33,8 +36,9 @@ export const criar = (req: Request, res: Response) => {
 
 export const deletar = (req: Request, res: Response) => {
     let { id } = req.params;
+    let produto = new Produto({ id: Number(id) })
 
-    connection.query(`DELETE FROM produtos WHERE id = ${id}`, (err, result) => {
+    connection.query(produto.delete(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
@@ -46,8 +50,13 @@ export const deletar = (req: Request, res: Response) => {
 
 export const atualizar = (req: Request, res: Response) => {
     let { id } = req.params;
+    let data: inventarioType = {
+        id: Number(id),
+        ...req.body
+    };
+    let produto = new Produto(data);
 
-    connection.query(`UPDATE produtos SET nome = '${req.body.nome}', descricao = '${req.body.descricao}', valor = ${req.body.valor} WHERE id = ${id}`, (err, result) => {
+    connection.query(produto.update(), (err, result) => {
         if (err) {
             res.status(500).end();
         } else {
